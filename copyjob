@@ -1,0 +1,32 @@
+
+COPY employee_data
+FROM 's3://my-demo-bucket-131/input/emp_tab.csv'
+IAM_ROLE 'arn:aws:iam::xxxxxxx678:role/MyRoleRedshiftS3Access'
+FORMAT AS CSV
+IGNOREHEADER 1
+DATEFORMAT 'auto';
+
+If it is run multiple times against the same S3 folder, it will load the data again, resulting in data duplication
+
+
+COPY employee_data
+FROM 's3://my-demo-xxxx-131/input'
+IAM_ROLE 'arn:aws:iam::xxxxxxx678:role/MyRoleRedshiftS3Access'
+FORMAT AS CSV
+IGNOREHEADER 1
+DATEFORMAT 'auto'
+region 'us-east-1'
+JOB CREATE job_employee_data AUTO ON;
+
+
+
+#List auto-copy jobs – Use SYS_COPY_JOB to list the auto-copy jobs stored in the database.
+
+
+SELECT * 
+  FROM sys_copy_job;
+  
+  Get a summary of a auto-copy job –
+  
+  SELECT *
+  FROM sys_load_history
